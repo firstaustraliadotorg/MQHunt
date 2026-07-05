@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop 2 — A Colourful Ear | MQ Campus Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            background: linear-gradient(150deg, #0e4d5c, #0891b2, #0e7490);
+            padding: 28px 20px 24px;
+            text-align: center;
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .header-emoji {
+            font-size: 3.2rem;
+            display: block;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 18px;
+        }
+
+        .progress-wrap {
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.18);
+            height: 5px;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: rgba(255,255,255,0.8);
+            height: 100%;
+            width: 20%;
+            border-radius: 99px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            opacity: 0.6;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-align: right;
+        }
+
+        /* ── CONTAINER ───────────────────────────── */
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 24px 16px 0;
+        }
+
+        /* ── CARDS ───────────────────────────────── */
+        .card {
+            background: #1f2937;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .card-label::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ── POEM ────────────────────────────────── */
+        .poem {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.95;
+            color: #a5f3fc;
+            border-left: 3px solid #0891b2;
+            padding-left: 18px;
+        }
+
+        .poem p { margin-bottom: 18px; }
+        .poem p:last-child { margin-bottom: 0; }
+
+        .poem .motto {
+            font-style: normal;
+            font-weight: 700;
+            color: #ffffff;
+            background: rgba(8,145,178,0.2);
+            border: 1px solid rgba(8,145,178,0.4);
+            border-radius: 6px;
+            padding: 2px 10px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── DIVIDER ─────────────────────────────── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 8px 0;
+            color: #4b5563;
+            font-size: 0.78rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* ── PASSWORD GATE ───────────────────────── */
+        .gate-card {
+            background: linear-gradient(145deg, #111827, #1f2937);
+            border-color: rgba(8,145,178,0.35);
+        }
+
+        .gate-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #e0f2fe;
+            margin-bottom: 8px;
+        }
+
+        .gate-hint {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .gate-hint strong {
+            color: #67e8f9;
+        }
+
+        .input-wrap {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .gate-input {
+            width: 100%;
+            background: #111827;
+            border: 2px solid rgba(8,145,178,0.4);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 1.1rem;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+            letter-spacing: 2px;
+        }
+
+        .gate-input:focus { border-color: #0891b2; }
+
+        .gate-input.error {
+            border-color: #ef4444;
+            animation: shake 0.3s ease;
+        }
+
+        .gate-input.success { border-color: #34d399; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #0891b2;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .submit-btn:hover { background: #0e7490; transform: translateY(-1px); }
+        .submit-btn:active { transform: translateY(0); }
+
+        .error-msg {
+            display: none;
+            color: #f87171;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .error-msg.visible { display: block; }
+
+        .success-msg {
+            display: none;
+            background: rgba(52,211,153,0.1);
+            border: 1px solid rgba(52,211,153,0.3);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            color: #34d399;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .success-msg.visible { display: block; }
+
+        /* ── FOOTER ──────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #374151;
+            margin-top: 28px;
+            line-height: 1.6;
+        }
+    
+        /* ── MULTIPLE CHOICE HINT (after 6 wrong attempts) ── */
+        .mcq-section {
+            margin-top: 14px;
+            display: none;
+        }
+        .mcq-label {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+        .mcq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .choice-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 10px;
+            padding: 12px 8px;
+            color: #e5e7eb;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .choice-btn:hover {
+            background: rgba(255,255,255,0.13);
+            border-color: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <span class="hunt-label">MQ Campus Hunt</span>
+    <span class="header-emoji">👂</span>
+    <h1>A Colourful Ear</h1>
+    <p class="header-sub">Solve the riddle to find your next destination</p>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-label">Stop 2 of 10</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- RIDDLE POEM -->
+    <div class="card">
+        <div class="card-label" style="color:#0891b2;">The Riddle — read aloud as a team</div>
+        <div class="poem">
+            <p>
+                Hear Ye! Hear Ye! Hear Ye!<br>
+                Come closer, and lend us your ear!<br>
+                We seek a building of breakthrough<br>
+                located quite near.
+            </p>
+            <p>
+                For years, nerve deafness had no answer in sight —<br>
+                A world without sound, without music to delight.<br>
+                But brilliant Australian minds refused to give in,<br>
+                And found a way to let the hearing begin.
+            </p>
+            <p>
+                By sending small sparks down the nerve just so,<br>
+                They unlocked a world of sound below.<br>
+                A cochlear implant — a marvel of science and care,<br>
+                Now millions hear laughter and music in the air.
+            </p>
+            <p>
+                Seek out their motto, their promise, their call:<br>
+                <span class="motto">"Hear Now. And Always"</span> — a gift to us all.<br>
+                If those words greet you, you're on the right track —<br>
+                Step into the lobby and don't look back!
+            </p>
+        </div>
+    </div>
+
+    <div class="divider">Found it?</div>
+
+    <!-- PASSWORD GATE -->
+    <div class="card gate-card">
+        <div class="gate-question">What is their promise?</div>
+        <p class="gate-hint">
+            You should be standing in the right building now.<br>
+            Type the <strong>last word</strong> of the motto on the wall to unlock your challenges.
+        </p>
+
+        <div class="input-wrap">
+            <input
+                type="text"
+                class="gate-input"
+                id="passwordInput"
+                placeholder="Type your answer…"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+            />
+        </div>
+
+        <button class="submit-btn" onclick="checkPassword()">Unlock Challenges →</button>
+        <div class="mcq-section" id="mcqSection">
+            <p class="mcq-label">&#128161; Having trouble? Select your answer:</p>
+            <div class="mcq-grid" id="mcqGrid"></div>
+        </div>
+
+        <div class="error-msg" id="errorMsg">
+            ❌ Not quite — look for the motto on the wall and check the last word!
+        </div>
+
+        <div class="success-msg" id="successMsg">
+            ✅ Correct! Taking you to your challenges…
+        </div>
+    </div>
+
+</div>
+
+<p class="footer">MQ Campus Treasure Hunt &nbsp;·&nbsp; Stuck? Look for the motto displayed in the building!</p>
+
+<script>
+    const ANSWER = 'always';
+    const WRONG_OPTIONS = ['never', 'sometimes', 'often'];
+    let wrongAttempts  = 0;
+    const NEXT_PAGE = '2026-06-28-clue-02b-cochlear-tasks.html';
+
+    function checkPassword() {
+        const input = document.getElementById('passwordInput');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const val = input.value.trim().toLowerCase();
+
+        if (val === ANSWER) {
+            input.classList.remove('error');
+            input.classList.add('success');
+            errorMsg.classList.remove('visible');
+            successMsg.classList.add('visible');
+            document.querySelector('.submit-btn').disabled = true;
+            setTimeout(() => {
+                const alliance = new URLSearchParams(window.location.search).get('alliance') || '1';
+                window.location.href = NEXT_PAGE + '?alliance=' + alliance;
+            }, 1200);
+        } else {
+            wrongAttempts++;
+            if (wrongAttempts === 6) showMultipleChoice();
+            input.classList.add('error');
+            input.classList.remove('success');
+            errorMsg.classList.add('visible');
+            successMsg.classList.remove('visible');
+            setTimeout(() => input.classList.remove('error'), 400);
+        }
+    }
+
+
+    function showMultipleChoice() {
+        const section = document.getElementById('mcqSection');
+        const grid    = document.getElementById('mcqGrid');
+        const options = [ANSWER, ...WRONG_OPTIONS];
+        for (let i = options.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [options[i], options[j]] = [options[j], options[i]];
+        }
+        grid.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = opt;
+            btn.onclick = () => {
+                document.getElementById('passwordInput').value = opt;
+                checkPassword();
+            };
+            grid.appendChild(btn);
+        });
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPassword();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQ Campus Hunt — Next Clue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #030712;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            background: linear-gradient(160deg, #030712, #111827, #1e2a3a);
+            padding: 28px 20px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: rgba(251,191,36,0.12);
+            border: 1px solid rgba(251,191,36,0.3);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #fde68a;
+            margin-bottom: 14px;
+        }
+
+        .alliance-badge {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .stop-counter {
+            font-size: 0.82rem;
+            color: #475569;
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-wrap { max-width: 320px; margin: 0 auto; }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            height: 5px;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            height: 100%;
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            opacity: 0.5;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-align: right;
+            color: #94a3b8;
+        }
+
+        /* ── CONTAINER ───────────────────────────── */
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 28px 16px 0;
+        }
+
+        /* ── NEXT CLUE INTRO ─────────────────────── */
+        .clue-intro {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .clue-intro-emoji {
+            font-size: 3.2rem;
+            display: block;
+            margin-bottom: 10px;
+            filter: var(--stop-glow, none);
+        }
+
+        .clue-intro-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--stop-color, #fbbf24);
+            margin-bottom: 6px;
+        }
+
+        .clue-intro-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: #f1f5f9;
+            line-height: 1.3;
+        }
+
+        /* ── LOCATION CARD ───────────────────────── */
+        .location-card {
+            display: none; /* shown only for Frank */
+            background: rgba(251,191,36,0.07);
+            border: 1px solid rgba(251,191,36,0.25);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .location-card.hidden { display: none; }
+
+        .location-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+        .location-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fbbf24;
+            margin-bottom: 6px;
+        }
+
+        .location-text {
+            font-size: 0.88rem;
+            color: #fde68a;
+            line-height: 1.6;
+        }
+
+        /* ── POEM CARD ───────────────────────────── */
+        .poem-card {
+            background: #0f172a;
+            border-radius: 18px;
+            padding: 28px 24px;
+            margin-bottom: 16px;
+            border: 1px solid var(--stop-border, rgba(251,191,36,0.15));
+        }
+
+        .poem-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--stop-color, #fbbf24);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .poem-label::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        .poem {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.95;
+            color: var(--stop-poem-color, #fde68a);
+            border-left: 3px solid var(--stop-color, #fbbf24);
+            padding-left: 18px;
+        }
+
+        .poem p { margin-bottom: 18px; }
+        .poem p:last-child { margin-bottom: 0; }
+
+        /* ── ACTION CARD ─────────────────────────── */
+        .action-card {
+            background: #0f172a;
+            border-radius: 18px;
+            padding: 22px 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+        }
+
+        .action-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .go-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--stop-btn-from, #15803d), var(--stop-btn-to, #16a34a));
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 17px 20px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .go-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .go-btn:active { transform: translateY(0); }
+
+        /* ── FINISH SCREEN ───────────────────────── */
+        .finish-screen { display: none; text-align: center; padding: 40px 0; }
+
+        .finish-emoji { font-size: 4rem; display: block; margin-bottom: 16px; }
+
+        .finish-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #fbbf24;
+            margin-bottom: 12px;
+        }
+
+        .finish-text {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        /* ── PLACEHOLDER ─────────────────────────── */
+        .placeholder-card {
+            background: rgba(251,191,36,0.05);
+            border: 1px dashed rgba(251,191,36,0.2);
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        /* ── FOOTER ──────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #1f2937;
+            margin-top: 32px;
+            line-height: 1.6;
+        }
+
+        /* ── MYSTERY CARD ───────────────────────────── */
+        .mystery-card {
+            background: #0f172a;
+            border-radius: 18px;
+            padding: 36px 24px;
+            margin-bottom: 16px;
+            border: 1px solid var(--stop-border, rgba(251,191,36,0.15));
+            text-align: center;
+        }
+
+        .mystery-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .mystery-text {
+            font-size: 0.95rem;
+            color: #64748b;
+            line-height: 1.8;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .mystery-stop-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 999px;
+            padding: 4px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--stop-color, #fbbf24);
+            margin-bottom: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <span class="hunt-label">MQ Campus Hunt</span>
+    <span class="alliance-badge" id="allianceBadge">Alliance —</span>
+    <div class="stop-counter" id="stopCounter">Loading your route…</div>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div class="progress-label" id="progressLabel">Stop — of 9</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- MAIN CLUE CONTENT (shown when there is a next stop) -->
+    <div id="clueContent">
+
+        <div class="clue-intro">
+            <span class="clue-intro-emoji" id="nextEmoji">🗺️</span>
+            <div class="clue-intro-label" id="clueIntroLabel">Your next clue</div>
+            <div class="clue-intro-heading" id="nextHeading">Loading…</div>
+        </div>
+
+        <!-- Location card (only shown for stops with a starting location, e.g. Frank) -->
+        <div class="location-card hidden" id="locationCard">
+            <span class="location-icon">📍</span>
+            <div>
+                <div class="location-title">Starting Point</div>
+                <div class="location-text" id="locationText"></div>
+            </div>
+        </div>
+
+        <!-- Mystery teaser — riddle lives on the A page -->
+        <div class="mystery-card">
+            <div class="mystery-stop-label" id="stopBadge">Stop — of 9</div>
+            <span class="mystery-icon">🗺️</span>
+            <p class="mystery-text" id="mysteryText">
+                A riddle has been encoded for your team. Tap the button below to reveal it —
+                then work together to figure out where on campus it leads!
+            </p>
+        </div>
+
+        <!-- Go button -->
+        <div class="action-card">
+            <p class="action-text" id="actionText">Navigate to this location, then tap the button when your whole team has arrived.</p>
+            <button class="go-btn" id="goBtn" onclick="goToStop()">
+                We're there — let's go! →
+            </button>
+        </div>
+
+    </div>
+
+    <!-- FINISH SCREEN (shown when all stops are complete) -->
+    <div class="finish-screen" id="finishScreen">
+        <span class="finish-emoji">🏆</span>
+        <div class="finish-heading">Hunt Complete!</div>
+        <p class="finish-text" id="finishText">
+            Congratulations! Your alliance has completed all 9 stops of the MQ Campus Treasure Hunt. Head back to the starting area to submit your completed answer sheet.
+        </p>
+    </div>
+
+</div>
+
+<p class="footer" id="footerText">MQ Campus Treasure Hunt · Read the riddle, find the location, enter the password!</p>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STOP DEFINITIONS
+// ═══════════════════════════════════════════════════════
+const STOPS = {
+
+    frank: {
+        id: 'frank',
+        name: 'Frank the Bear',
+        emoji: '🐻',
+        color: '#b45309',
+        border: 'rgba(180,83,9,0.3)',
+        poemColor: '#fde68a',
+        btnFrom: '#92400e',
+        btnTo: '#b45309',
+        glow: 'drop-shadow(0 2px 12px rgba(180,83,9,0.6))',
+        file: '2026-06-28-clue-01a-what-the-frank.html',
+        location: 'Get your team to the South East corner of Wally\'s Walk &amp; Eastern Road (Map Ref 21N), then read the riddle aloud.',
+        poem: [
+            "I'm not alive, but I stand my ground,<br>A large brown guardian, campus-renowned.<br>I never growl, I never roar,<br>But plenty have stopped and stared in awe.",
+            "From where you stand, five doors you'll see<br>But only one will lead to me.<br>You'll find me just inside the door,<br>When someone shouts — look no more!",
+            "Don't leave a straggler out in the cold —<br>I'd snack on the slow ones, or so I've been told!<br><br>Find me in this place of learning,<br>Strike my pose — careful, no squirming! 🐻"
+        ]
+    },
+
+    cochlear: {
+        id: 'cochlear',
+        name: 'Cochlear',
+        emoji: '👂',
+        color: '#0891b2',
+        border: 'rgba(8,145,178,0.3)',
+        poemColor: '#a5f3fc',
+        btnFrom: '#0e7490',
+        btnTo: '#0891b2',
+        glow: 'drop-shadow(0 2px 12px rgba(8,145,178,0.5))',
+        file: '2026-06-28-clue-02a-cochlear-riddle.html',
+        location: null,
+        poem: [
+            "Hear Ye! Hear Ye! Hear Ye!<br>Come closer, and lend us your ear!<br>We seek a building of breakthrough<br>located quite near.",
+            "For years, nerve deafness had no answer in sight —<br>A world without sound, without music to delight.<br>But brilliant Australian minds refused to give in,<br>And found a way to let the hearing begin.",
+            "By sending small sparks down the nerve just so,<br>They unlocked a world of sound below.<br>A cochlear implant — a marvel of science and care,<br>Now millions hear laughter and music in the air.",
+            "Seek out their motto, their promise, their call:<br><em>\"Hear Now. And Always\"</em> — a gift to us all.<br>If those words greet you, you're on the right track —<br>Step into the lobby and don't look back! 👂"
+        ]
+    },
+
+    jack: {
+        id: 'jack',
+        name: 'Jack the Dinosaur',
+        emoji: '🦕',
+        color: '#c2410c',
+        border: 'rgba(194,65,12,0.3)',
+        poemColor: '#fed7aa',
+        btnFrom: '#9a3412',
+        btnTo: '#c2410c',
+        glow: 'drop-shadow(0 2px 12px rgba(194,65,12,0.5))',
+        file: '2026-06-28-clue-03a-jack-riddle.html',
+        location: null,
+        poem: [
+            "I roamed the earth when giants ruled the land,<br>A teenage terror — though you might not understand.<br>My cousin Rex gets all the glory and the fame,<br>But I'm just as fearsome — <em>Tarbosaurus</em> is my name.",
+            "From the ancient sands of the Gobi Desert's floor,<br>My bones were cast and brought to this distant shore.<br>Named for a Professor who once walked these very halls,<br>Since ninety-six I've stood watch over these walls.",
+            "Six and a half metres — yet still just a teen,<br>Find where biology lives, and breathes, and grows,<br>And come stand beneath me — everyone who knows! 🦕"
+        ]
+    },
+
+    business: {
+        id: 'business',
+        name: 'Macquarie Business School',
+        emoji: '🏢',
+        color: '#991b1b',
+        border: 'rgba(153,27,27,0.35)',
+        poemColor: '#fca5a5',
+        btnFrom: '#7f1d1d',
+        btnTo: '#991b1b',
+        glow: 'drop-shadow(0 2px 12px rgba(153,27,27,0.5))',
+        file: '2026-06-28-clue-04a-business-school-riddle.html',
+        location: null,
+        poem: [
+            "Where the Metro comes to surface from the tunnels underground,<br>And the Macquarie Centre beckons with its food court all around,<br>A tower hard to miss awaits you, striking, bold and tall —<br>Its name in white on black runs top to bottom down the wall.",
+            "Where tomorrow's leaders study — business, trade and more —<br>You may have walked straight past this building on your way before!<br>The red will catch your eye below, the white will draw your gaze —<br>Look up, look long, look carefully through the mid-campus haze. 🏢"
+        ]
+    },
+
+    observatory: {
+        id: 'observatory',
+        name: 'Macquarie Observatory',
+        emoji: '🔭',
+        color: '#0369a1',
+        border: 'rgba(3,105,161,0.35)',
+        poemColor: '#bae6fd',
+        btnFrom: '#075985',
+        btnTo: '#0369a1',
+        glow: 'drop-shadow(0 2px 16px rgba(251,191,36,0.4))',
+        file: '2026-06-28-clue-05a-observatory-riddle.html',
+        location: null,
+        poem: [
+            "Head to where the campus ends, the north-east edge is near,<br>Where the buildings thin and open sky grows ever clear.<br>Walk until you reach the corner where the campus stops its spread —<br>Look for steel and silver rising high above your head.",
+            "A dome of science waits up there, a throne of wonder bright,<br>Through its patient eye the universe reveals itself at night.<br>Planets, moons and nebulae, burning cold and far —<br>Galileo dreamed of tools that help us read each star.",
+            "Seek the silver dome that guards the campus's farthest bound,<br>Where astronomers have gathered since this marvel first was found.<br>Head north-east until you spot the dome held high —<br>Then tap the button where Macquarie meets the sky! 🔭"
+        ]
+    },
+
+    stop6: {
+        id: 'stop6',
+        name: 'Michael Kirby Building',
+        emoji: '⚖️',
+        color: '#0f4c75',
+        border: 'rgba(15,76,117,0.4)',
+        poemColor: '#fde68a',
+        btnFrom: '#0a2f4d',
+        btnTo: '#0f4c75',
+        glow: 'drop-shadow(0 2px 12px rgba(15,76,117,0.6))',
+        file: '2026-07-05-clue-06a-law-school-riddle.html',
+        location: null,
+        poem: [
+            "Where order meets ambition, where the arguments are heard,<br>Where future lawyers wrestle with each precedent and word —<br>A school of rights and reasoning has risen from the ground,<br>Built from cross-laminated timber, bold and campus-renowned.",
+            "Step inside the soaring atrium where the golden stairs glow bright,<br>Where massive beams of timber rise and skylights flood with light.<br>At University Avenue where Wally's Walk runs true —<br>A famous judge's name adorns this building — find your clue! ⚖️"
+        ]
+    },
+
+    stop7: {
+        id: 'stop7',
+        name: 'The Eoin Wilkinson Collection',
+        emoji: '📚',
+        color: '#059669',
+        border: 'rgba(5,150,105,0.3)',
+        poemColor: '#a7f3d0',
+        btnFrom: '#047857',
+        btnTo: '#059669',
+        glow: 'drop-shadow(0 2px 12px rgba(5,150,105,0.4))',
+        file: '2026-07-05-clue-07a-library-riddle.html',
+        location: null,
+        poem: [
+            "Where silence greets the searching mind and knowledge fills the air,<br>A building stands for all who come to learn with diligence and care.<br>Past the entrance doors, bear right and seek a section set apart —<br>A librarian's name marks out the spot — a sanctuary of art.",
+            "From seventy-one to eighty-seven, he kept the pages turning,<br>A dedication to this campus and its students ever-learning.<br>His name adorns the section — seek it out upon the wall,<br>Where blown glass catches coloured light and wonder fills the hall.",
+            "Your mission: look, admire, and then debate as one —<br>Which piece of glass is finest? Let your democracy be done!<br>Two stand beside your voted champion — glowing, bright, unique —<br>Then photograph and upload it: that's the next clue that you seek! 📚"
+        ]
+    },
+
+    stop8: {
+        id: 'stop8',
+        name: 'To Absent Friends',
+        emoji: '✨',
+        color: '#6366f1',
+        border: 'rgba(99,102,241,0.3)',
+        poemColor: '#c7d2fe',
+        btnFrom: '#4338ca',
+        btnTo: '#6366f1',
+        glow: 'drop-shadow(0 2px 16px rgba(99,102,241,0.6))',
+        file: '2026-07-05-clue-08a-hologram-riddle.html',
+        location: null,
+        poem: [
+            "Stand in the Central Courtyard and face the 1CC tall —<br>You may not know it yet, but I'm not far away at all.<br>The building on your right holds something rare to find:<br>You'll need your very keenest eyes and a sharp and searching mind.",
+            "I'm one of the world's largest of my radiant, glowing kind —<br>A miracle of laser light, a wonder of the mind.<br>An ode raised to the absent ones, to friends who aren't here now,<br>The night they toasted those long gone — I captured every vow.",
+            "It was quite a night out back then — the glasses rose up high!<br>Now seek me where the light refracts and rainbows catch your eye.<br>Step inside, let vision adjust, and find what's waiting there —<br>Raise a toast to absent friends shimmering in the air. 🥂"
+        ]
+    },
+
+    stop9: {
+        id: 'stop9',
+        name: 'Engineering the Future',
+        emoji: '⚙️',
+        color: '#f97316',
+        border: 'rgba(249,115,22,0.3)',
+        poemColor: '#fed7aa',
+        btnFrom: '#c2410c',
+        btnTo: '#f97316',
+        glow: 'drop-shadow(0 2px 14px rgba(249,115,22,0.6))',
+        file: '2026-07-05-clue-09a-engineering-riddle.html',
+        location: null,
+        poem: [
+            "Walk down Wally's Walk where the future takes its stand,<br>Five storeys tall and gleaming — built by many a skilled hand.<br>Where Balaclava Road draws near and Wally's Walk runs true —<br>The newest Engineering hub is looking straight at you.",
+            "No lecture halls within these walls — just Mega Labs instead,<br>Where robots whir and drones ascend and breakthroughs forge ahead.<br>Directional speakers carve the air, the satellite teams assemble —<br>From solar roof to cold shell top, this building makes you tremble!",
+            "This is your last location — nine of nine, you've run the race!<br>Producing 'Engineers for Humanity' to help the human race —<br>Strike your boldest builder's pose with the tower at your back,<br>And prove you've earned your place among the engineers on track! 🏗️"
+        ]
+    }
+
+};
+
+// ═══════════════════════════════════════════════════════
+//  ROUTING TABLE  (10 routes · 9 stops each)
+//  Rule: frank ALWAYS appears before jack in every route.
+//
+//  Routes 1–7: cyclic rotation of base sequence
+//              frank,cochlear,jack,business,observatory,stop6,stop7,stop8,stop9
+//              starting at positions that keep frank before jack.
+//  Routes 8–10: cochlear-first variants with frank before jack.
+// ═══════════════════════════════════════════════════════
+const ROUTES = {
+    1:  ['frank','cochlear','jack','business','observatory','stop6','stop7','stop8','stop9'],
+    2:  ['stop9','frank','cochlear','jack','business','observatory','stop6','stop7','stop8'],
+    3:  ['stop8','stop9','frank','cochlear','jack','business','observatory','stop6','stop7'],
+    4:  ['stop7','stop8','stop9','frank','cochlear','jack','business','observatory','stop6'],
+    5:  ['stop6','stop7','stop8','stop9','frank','cochlear','jack','business','observatory'],
+    6:  ['observatory','stop6','stop7','stop8','stop9','frank','cochlear','jack','business'],
+    7:  ['business','observatory','stop6','stop7','stop8','stop9','frank','cochlear','jack'],
+    8:  ['cochlear','business','observatory','frank','jack','stop6','stop7','stop8','stop9'],
+    9:  ['cochlear','stop6','stop7','frank','jack','business','observatory','stop8','stop9'],
+    10: ['cochlear','observatory','stop9','stop8','frank','jack','stop7','stop6','business']
+};
+
+// ═══════════════════════════════════════════════════════
+//  ROUTING LOGIC
+// ═══════════════════════════════════════════════════════
+
+const params   = new URLSearchParams(window.location.search);
+const alliance = parseInt(params.get('alliance')) || 1;
+const from     = params.get('from'); // stop ID just completed, or null/undefined for start
+
+// Sessions repeat the same 10 routes: alliance 11 = route 1, alliance 21 = route 1, etc.
+const routeNum   = ((alliance - 1) % 10) + 1;
+const route      = ROUTES[routeNum];
+const totalStops = route.length; // 9
+
+// Determine next stop index
+let nextIdx;
+if (!from || from === 'start') {
+    nextIdx = 0;
+} else {
+    const completedIdx = route.indexOf(from);
+    nextIdx = completedIdx + 1;
+}
+
+// Update header
+document.getElementById('allianceBadge').textContent = 'Alliance ' + alliance;
+
+if (nextIdx >= totalStops) {
+    // ── HUNT COMPLETE ──────────────────────────────────
+    document.getElementById('clueContent').style.display = 'none';
+    document.getElementById('finishScreen').style.display = 'block';
+    document.getElementById('stopCounter').textContent = 'All ' + totalStops + ' stops complete!';
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Stop ' + totalStops + ' of ' + totalStops;
+    document.getElementById('footerText').textContent = 'MQ Campus Treasure Hunt · Congratulations!';
+
+} else {
+    // ── SHOW NEXT CLUE ─────────────────────────────────
+    const stopNum  = nextIdx + 1; // 1-based stop number for THIS alliance
+    const stopId   = route[nextIdx];
+    const stop     = STOPS[stopId];
+
+    // Progress
+    document.getElementById('stopCounter').textContent =
+        nextIdx === 0 ? 'Here is your first clue!' : 'Stop ' + stopNum + ' of ' + totalStops;
+    document.getElementById('progressFill').style.width = Math.round((nextIdx / totalStops) * 100) + '%';
+    document.getElementById('progressLabel').textContent = 'Stop ' + stopNum + ' of ' + totalStops;
+
+    // Apply stop colour theme via CSS variables on :root
+    document.documentElement.style.setProperty('--stop-color',      stop.color);
+    document.documentElement.style.setProperty('--stop-border',     stop.border);
+    document.documentElement.style.setProperty('--stop-poem-color', stop.poemColor);
+    document.documentElement.style.setProperty('--stop-btn-from',   stop.btnFrom);
+    document.documentElement.style.setProperty('--stop-btn-to',     stop.btnTo);
+    document.documentElement.style.setProperty('--stop-glow',       stop.glow);
+
+    // Stop badge & generic heading — don't reveal the destination name
+    document.getElementById('stopBadge').textContent =
+        nextIdx === 0 ? 'Clue 1 of ' + totalStops : 'Clue ' + stopNum + ' of ' + totalStops;
+    document.getElementById('nextEmoji').textContent = '🗺️';
+    document.getElementById('nextHeading').textContent =
+        nextIdx === 0 ? 'Your hunt begins!' : 'Next riddle ready!';
+
+    // Location card (only for stops with a physical starting point)
+    if (stop.location) {
+        const card = document.getElementById('locationCard');
+        card.classList.remove('hidden');
+        document.getElementById('locationText').innerHTML = stop.location;
+    }
+
+    // Riddle lives on the A page — show the mystery teaser here only
+    // Action text & button label
+    const isFirst = nextIdx === 0;
+    document.getElementById('actionText').textContent = isFirst
+        ? 'Tap below to reveal your first riddle! Read it as a team, work out where it leads, then head there together.'
+        : 'Tap below to reveal your next riddle! Read it as a team, work out where it leads, then head there together.';
+    document.getElementById('goBtn').textContent = isFirst
+        ? 'Reveal First Riddle →'
+        : 'Reveal Next Riddle →';
+
+    // Go button destination
+    document.getElementById('goBtn').dataset.file  = stop.file;
+    document.getElementById('goBtn').dataset.alliance = alliance;
+}
+
+function goToStop() {
+    const btn      = document.getElementById('goBtn');
+    const file     = btn.dataset.file;
+    const alliance = btn.dataset.alliance;
+    if (file) {
+        window.location.href = file + '?alliance=' + alliance;
+    }
+}
+</script>
+
+</body>
+</html>

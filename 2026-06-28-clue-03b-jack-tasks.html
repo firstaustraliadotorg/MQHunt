@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop 3 — Jack | MQ Campus Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            background: linear-gradient(150deg, #292524, #78350f, #451a03);
+            padding: 28px 20px 24px;
+            text-align: center;
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .header-emoji {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            opacity: 0.75;
+            margin-bottom: 18px;
+        }
+
+        .progress-wrap { max-width: 320px; margin: 0 auto; }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 5px;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: rgba(255,255,255,0.85);
+            height: 100%;
+            width: 30%;
+            border-radius: 99px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            opacity: 0.65;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-align: right;
+        }
+
+        /* ── CONTAINER ───────────────────────────── */
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 24px 16px 0;
+        }
+
+        /* ── CARDS ───────────────────────────────── */
+        .card {
+            background: #1f2937;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .card-label::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ── WELCOME BANNER ──────────────────────── */
+        .welcome-banner {
+            background: rgba(146,64,14,0.15);
+            border: 1px solid rgba(146,64,14,0.4);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .welcome-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #fed7aa;
+            margin-bottom: 6px;
+        }
+
+        .welcome-banner p {
+            font-size: 0.88rem;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        /* ── CHALLENGE CARD ──────────────────────── */
+        .challenge-card {
+            background: linear-gradient(145deg, #0c2340, #1f2937);
+            border-color: rgba(59,130,246,0.25);
+        }
+
+        .challenge-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #93c5fd;
+            margin-bottom: 16px;
+        }
+
+        /* ── STEPS ───────────────────────────────── */
+        .steps { list-style: none; counter-reset: steps; }
+
+        .steps li {
+            counter-increment: steps;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            font-size: 0.93rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .steps li:last-child { margin-bottom: 0; }
+
+        .steps li::before {
+            content: counter(steps);
+            background: #3b82f6;
+            color: #fff;
+            min-width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: #c2410c;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 20px 0 10px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .upload-btn:hover { background: #9a3412; transform: translateY(-1px); }
+
+        .reveal-btn {
+            width: 100%;
+            background: transparent;
+            color: #fdba74;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 13px 20px;
+            border-radius: 12px;
+            border: 2px solid #c2410c;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reveal-btn:hover { background: rgba(194,65,12,0.1); }
+        .reveal-btn:disabled { opacity: 0.5; cursor: default; }
+
+        /* ── STEM ────────────────────────────────── */
+        .stem-card {
+            background: linear-gradient(145deg, #064e3b, #1f2937);
+            border-color: rgba(52,211,153,0.2);
+        }
+
+        .stem-fact {
+            background: rgba(52,211,153,0.08);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: #d1fae5;
+        }
+
+        .stem-fact strong { color: #34d399; }
+
+        .stem-question {
+            margin-top: 14px;
+            font-size: 0.88rem;
+            font-style: italic;
+            color: #6ee7b7;
+            line-height: 1.6;
+        }
+
+        /* ── NEXT CLUE ───────────────────────────── */
+        #nextClueSection { display: none; }
+
+        .next-clue-card {
+            background: #0d1117;
+            border-color: rgba(251,191,36,0.2);
+        }
+
+        .next-clue-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+
+        .next-clue-intro {
+            font-size: 0.88rem;
+            color: #9ca3af;
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        .poem-next {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.95;
+            color: #fde68a;
+            border-left: 3px solid #fbbf24;
+            padding-left: 18px;
+        }
+
+        .poem-next p { margin-bottom: 16px; }
+        .poem-next p:last-child { margin-bottom: 0; }
+
+        /* ── NEXT STOP BUTTON ────────────────────── */
+        .next-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #15803d, #16a34a);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 20px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* ── FOOTER ──────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #374151;
+            margin-top: 28px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <span class="hunt-label">MQ Campus Hunt</span>
+    <span class="header-emoji">🦕</span>
+    <h1>Jack</h1>
+    <p class="header-sub">Complete all challenges before moving on!</p>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-label">Stop 3 of 10</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+        <h2>Frank's cipher led you here! 🦕</h2>
+        <p style="margin-bottom:10px;">Head to the <strong style="color:#fde68a;">Biology Discovery Centre</strong> — it's in the <strong style="color:#fde68a;">diagonally opposite corner</strong> of the building where you found Frank the Bear. Walk around to the far side and look for the entrance.</p>
+        <p>Inside you'll find <strong style="color:#fed7aa;">Jack</strong> — a <em>Tarbosaurus bataar</em> skeleton, a close cousin of T-Rex, cast from a fossil found in Mongolia's Gobi Desert approximately <strong style="color:#fed7aa;">75 million years ago</strong>. Named after Professor Jack Bassett, he's been standing guard here since <strong style="color:#fed7aa;">1996</strong>. At 6.5 metres long, he was still just a teenager when he died!</p>
+    </div>
+
+    <!-- PHOTO CHALLENGE -->
+    <div class="card challenge-card">
+        <div class="card-label" style="color:#3b82f6;">📸 Challenge 1 — Photo</div>
+        <div class="challenge-title">Roar Like Jack!</div>
+        <ol class="steps">
+            <li><span>Strike your most fearsome Tarbosaurus pose — tiny arms raised, jaws snapping, one foot lifted!</span></li>
+            <li><span>Get the whole team in the shot with Jack looming behind you.</span></li>
+            <li><span>Take your best group photo — most terrifying pose wins bonus points!</span></li>
+            <li><span>Upload your photo using the button below.</span></li>
+        </ol>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeujMqRUgt0vlhniL6axwbQCaaQe8_A-ug0zZ2_abqI5b7DtA/viewform?usp=publish-editor" class="upload-btn" target="_blank">
+            📤 &nbsp;Upload Photo to Team Drive
+        </a>
+        <button class="reveal-btn" id="revealBtn" onclick="revealNextClue()">
+            ✅ &nbsp;Photo uploaded — unlock the next clue!
+        </button>
+    </div>
+
+    <!-- STEM CHALLENGE -->
+    <div class="card stem-card">
+        <div class="card-label" style="color:#34d399;">🔬 Optional Challenge 2 — STEM</div>
+        <div class="stem-fact">
+            Jack isn't made of real bone — he's a <strong>cast</strong>, made from moulds taken from the original fossil. Palaeontologists do this to protect fragile fossils while still sharing them with the world. <em>Tarbosaurus bataar</em> lived during the <strong>Late Cretaceous period</strong> (~75 million years ago) in what is now Mongolia. Despite being nearly as large as T-Rex, scientists know Jack was still growing — his <strong>unfused bone growth plates</strong> reveal he was a juvenile.
+        </div>
+        <p class="stem-question">
+            💭 As a group, discuss: How do scientists determine the age of a dinosaur skeleton? What is the difference between a fossil cast and a real fossil, and why does it matter?
+        </p>
+    </div>
+
+    <!-- CONTINUE (hidden until photo uploaded) -->
+    <div id="nextClueSection">
+        <div class="card next-clue-card">
+            <div class="card-label" style="color:#fbbf24;">✅ Stop Complete!</div>
+            <p style="font-size:0.9rem; color:#9ca3af; line-height:1.6; margin-bottom:20px;">
+                Great work! Tap below to receive your alliance's next clue.
+            </p>
+            <button class="next-btn" onclick="continueHunt()">
+                Get Next Clue →
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<p class="footer">MQ Campus Treasure Hunt &nbsp;·&nbsp; Complete all challenges before moving on!</p>
+
+<script>
+    function revealNextClue() {
+        const section = document.getElementById('nextClueSection');
+        const btn = document.getElementById('revealBtn');
+
+        section.style.display = 'block';
+        btn.textContent = '✅  Stop complete — get your next clue!';
+        btn.style.borderColor = '#34d399';
+        btn.style.color = '#34d399';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+
+    function continueHunt() {
+        const p = new URLSearchParams(window.location.search);
+        const alliance = p.get('alliance') || '1';
+        window.location.href = 'route.html?alliance=' + alliance + '&from=jack';
+    }
+</script>
+
+</body>
+</html>

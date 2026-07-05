@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop 1 — Frank the Bear | MQ Campus Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            background: linear-gradient(150deg, #78350f, #b45309, #92400e);
+            padding: 28px 20px 24px;
+            text-align: center;
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .header-emoji {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            opacity: 0.75;
+            margin-bottom: 18px;
+        }
+
+        .progress-wrap {
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 5px;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: rgba(255,255,255,0.85);
+            height: 100%;
+            width: 10%;
+            border-radius: 99px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            opacity: 0.65;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-align: right;
+        }
+
+        /* ── CONTAINER ───────────────────────────── */
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 24px 16px 0;
+        }
+
+        /* ── CARDS ───────────────────────────────── */
+        .card {
+            background: #1f2937;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .card-label::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ── WELCOME BANNER ──────────────────────── */
+        .welcome-banner {
+            background: rgba(180,83,9,0.15);
+            border: 1px solid rgba(180,83,9,0.4);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .welcome-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #fde68a;
+            margin-bottom: 6px;
+        }
+
+        .welcome-banner p {
+            font-size: 0.88rem;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        /* ── CHALLENGE ───────────────────────────── */
+        .challenge-card {
+            background: linear-gradient(145deg, #0c2340, #1f2937);
+            border-color: rgba(59,130,246,0.25);
+        }
+
+        .challenge-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #93c5fd;
+            margin-bottom: 16px;
+        }
+
+        .steps { list-style: none; counter-reset: steps; }
+
+        .steps li {
+            counter-increment: steps;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            font-size: 0.93rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .steps li:last-child { margin-bottom: 0; }
+
+        .steps li::before {
+            content: counter(steps);
+            background: #3b82f6;
+            color: #fff;
+            min-width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: #3b82f6;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 20px 0 10px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .upload-btn:hover { background: #2563eb; transform: translateY(-1px); }
+
+        .reveal-btn {
+            width: 100%;
+            background: transparent;
+            color: #93c5fd;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 13px 20px;
+            border-radius: 12px;
+            border: 2px solid #3b82f6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reveal-btn:hover { background: rgba(59,130,246,0.1); }
+        .reveal-btn:disabled { opacity: 0.5; cursor: default; }
+
+        /* ── STEM ────────────────────────────────── */
+        .stem-card {
+            background: linear-gradient(145deg, #064e3b, #1f2937);
+            border-color: rgba(52,211,153,0.2);
+        }
+
+        .stem-fact {
+            background: rgba(52,211,153,0.08);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: #d1fae5;
+        }
+
+        .stem-fact strong { color: #34d399; }
+
+        .stem-question {
+            margin-top: 14px;
+            font-size: 0.88rem;
+            font-style: italic;
+            color: #6ee7b7;
+            line-height: 1.6;
+        }
+
+        /* ── CIPHER ──────────────────────────────── */
+        #cipherSection { display: none; }
+
+        .cipher-card {
+            background: #0d1117;
+            border-color: rgba(251,191,36,0.2);
+        }
+
+        .cipher-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+
+        .cipher-intro {
+            font-size: 0.88rem;
+            color: #9ca3af;
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        .cipher-instructions {
+            background: rgba(251,191,36,0.07);
+            border: 1px solid rgba(251,191,36,0.15);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .cipher-instructions p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: #d1d5db;
+            margin-bottom: 8px;
+        }
+
+        .cipher-instructions p:last-child { margin-bottom: 0; }
+        .cipher-instructions strong { color: #fbbf24; }
+
+        .cipher-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .cipher-table thead tr {
+            background: rgba(251,191,36,0.12);
+        }
+
+        .cipher-table th {
+            padding: 9px 12px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fbbf24;
+        }
+
+        .cipher-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #e5e7eb;
+        }
+
+        .cipher-table tr:last-child td { border-bottom: none; }
+
+        .spacer-row td {
+            padding: 2px !important;
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .answer-label {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .blanks-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .word-blanks {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .blank {
+            width: 30px;
+            height: 40px;
+            border-bottom: 2.5px solid #fbbf24;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        .word-label {
+            font-size: 0.7rem;
+            color: #6b7280;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .cipher-hint {
+            background: rgba(251,191,36,0.08);
+            border-left: 3px solid #fbbf24;
+            border-radius: 0 10px 10px 0;
+            padding: 14px 16px;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #fde68a;
+        }
+
+        /* ── NEXT STOP BUTTON ────────────────────── */
+        .next-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #15803d, #16a34a);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 20px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* ── FOOTER ──────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #374151;
+            margin-top: 28px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <span class="hunt-label">MQ Campus Hunt</span>
+    <span class="header-emoji">🐻</span>
+    <h1>Frank the Bear</h1>
+    <p class="header-sub">Complete all three challenges before moving on!</p>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-label">Stop 1 of 10</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+        <h2>You found him! 🎉</h2>
+        <p>Frank was a <strong style="color:#fde68a;">Kodiak bear</strong> (<em>Ursus arctos middendorffi</em>), named after Professor Frank Mercer — the founding Professor of the School of Biological Sciences. Complete all three challenges below before decoding your next clue.</p>
+    </div>
+
+    <!-- PHOTO CHALLENGE -->
+    <div class="card challenge-card">
+        <div class="card-label" style="color:#3b82f6;">📸 Challenge 1 — Photo</div>
+        <div class="challenge-title">Become Frank!</div>
+        <ol class="steps">
+            <li><span>Get your whole team to mimic Frank's pose as closely as possible.</span></li>
+            <li><span>Take your best group photo — most convincing impression wins bonus points at the end!</span></li>
+            <li><span>Upload your photo to your team's Google Drive folder using the button below.</span></li>
+        </ol>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeujMqRUgt0vlhniL6axwbQCaaQe8_A-ug0zZ2_abqI5b7DtA/viewform?usp=publish-editor" class="upload-btn" target="_blank">
+            📤 &nbsp;Upload Photo to Team Drive
+        </a>
+        <button class="reveal-btn" id="revealBtn" onclick="revealCipher()">
+            ✅ &nbsp;Photo uploaded — unlock the next clue!
+        </button>
+    </div>
+
+    <!-- STEM FACT -->
+    <div class="card stem-card">
+        <div class="card-label" style="color:#34d399;">🔬 Optional Challenge 2 — STEM</div>
+        <div class="stem-fact">
+            Frank was a <strong>Kodiak bear</strong> (<em>Ursus arctos middendorffi</em>) — the largest subspecies of brown bear on Earth, capable of weighing over <strong>600 kg</strong>. After Frank died at Taronga Zoo in 1978, his body was prepared through <strong>taxidermy</strong>: his skin was removed, cleaned, and pulled over a wooden frame padded with cotton wool — a process that took <strong>nine months</strong> to complete.
+        </div>
+        <p class="stem-question">
+            💭 As a group, discuss: What is taxidermy, and what scientific purposes does it serve? Why might a university keep a taxidermied animal on display rather than a photograph?
+        </p>
+    </div>
+
+    <!-- CIPHER SECTION (hidden until photo uploaded) -->
+    <div id="cipherSection">
+        <div class="card cipher-card">
+            <div class="card-label" style="color:#fbbf24;">🔐 Challenge 3 — Cipher</div>
+            <div class="cipher-title">Frank's Secret Message</div>
+            <p class="cipher-intro">
+                Frank's information sign holds a hidden message pointing to your next destination. Use the steps below — your answer is two words that describe what you're looking for.
+            </p>
+
+            <div class="cipher-instructions">
+                <p><strong>Step 1:</strong> Look at Frank's sign. Number each sentence <strong>S1</strong> (first sentence) through <strong>S9</strong> (last sentence).</p>
+                <p><strong>Step 2:</strong> Within each sentence, number each word <strong>W1, W2, W3…</strong></p>
+                <p><strong>Step 3:</strong> Find the word at each coordinate below. Write its <strong>first letter</strong> in the matching blank.</p>
+            </div>
+
+            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px;">
+            <table class="cipher-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Coordinate</th>
+                        <th>First Letter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>S1, W1</td><td>___</td></tr>
+                    <tr><td>2</td><td>S1, W12</td><td>___</td></tr>
+                    <tr><td>3</td><td>S1, W27</td><td>___</td></tr>
+                    <tr><td>4</td><td>S2, W23</td><td>___</td></tr>
+                    <tr><td>5</td><td>S2, W5</td><td>___</td></tr>
+                    <tr><td>6</td><td>S2, W4</td><td>___</td></tr>
+                    <tr class="spacer-row"><td colspan="3">&nbsp;</td></tr>
+                    <tr><td>7</td><td>S6, W2</td><td>___</td></tr>
+                    <tr><td>8</td><td>S7, W6</td><td>___</td></tr>
+                    <tr><td>9</td><td>S9, W2</td><td>___</td></tr>
+                    <tr><td>10</td><td>S9, W5</td><td>___</td></tr>
+                    <tr><td>11</td><td>S5, W2</td><td>___</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <p class="answer-label">Your answer (two words):</p>
+            <div class="blanks-row">
+                <div>
+                    <div class="word-label">Word 1</div>
+                    <div class="word-blanks">
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="word-label">Word 2</div>
+                    <div class="word-blanks">
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                        <div class="blank">_</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cipher-hint">
+                💡 <strong>Hint:</strong> Frank's sign mentions a <em>Biological Sciences Museum</em> — that's where he was prepared for display. Your decoded words describe something that's been living there since 1996. You'll encounter it later on your route! 🦕
+            </div>
+        </div>
+
+        <button class="next-btn" onclick="continueHunt()">
+            Get Next Clue →
+        </button>
+    </div>
+
+</div>
+
+<p class="footer">MQ Campus Treasure Hunt &nbsp;·&nbsp; Complete all challenges before moving on!</p>
+
+<script>
+    function revealCipher() {
+        const section = document.getElementById('cipherSection');
+        const btn = document.getElementById('revealBtn');
+
+        section.style.display = 'block';
+        btn.textContent = '✅  Cipher unlocked — good luck!';
+        btn.style.borderColor = '#34d399';
+        btn.style.color = '#34d399';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+
+    function continueHunt() {
+        const p = new URLSearchParams(window.location.search);
+        const alliance = p.get('alliance') || '1';
+        window.location.href = 'route.html?alliance=' + alliance + '&from=frank';
+    }
+</script>
+
+</body>
+</html>

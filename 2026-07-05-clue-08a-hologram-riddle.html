@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop 8 — Where Have All My Good Friends Gone? | MQ Campus Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            background: linear-gradient(150deg, #1e1b4b, #312e81, #3730a3);
+            padding: 28px 20px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '· · · · ·';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            letter-spacing: 14px;
+            color: rgba(199,210,254,0.3);
+            white-space: nowrap;
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .header-emoji {
+            font-size: 3.2rem;
+            display: block;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 12px rgba(99,102,241,0.7));
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem;
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 18px;
+            color: #c7d2fe;
+        }
+
+        .progress-wrap { max-width: 320px; margin: 0 auto; }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 5px;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: rgba(255,255,255,0.85);
+            height: 100%;
+            width: 80%;
+            border-radius: 99px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            opacity: 0.6;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-align: right;
+            color: #c7d2fe;
+        }
+
+        /* ── CONTAINER ───────────────────────────── */
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 24px 16px 0;
+        }
+
+        /* ── CARDS ───────────────────────────────── */
+        .card {
+            background: #1f2937;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .card-label::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ── POEM CARD ───────────────────────────── */
+        .poem-card {
+            background: linear-gradient(145deg, #1a1744, #1f2937);
+            border-color: rgba(99,102,241,0.3);
+        }
+
+        .poem {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.95;
+            color: #c7d2fe;
+            border-left: 3px solid #6366f1;
+            padding-left: 18px;
+        }
+
+        .poem p { margin-bottom: 16px; }
+        .poem p:last-child { margin-bottom: 0; }
+
+        /* ── DIVIDER ─────────────────────────────── */
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 6px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .divider span {
+            background: #111827;
+            padding: 0 14px;
+            font-size: 0.78rem;
+            color: #374151;
+            position: relative;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* ── GATE CARD ───────────────────────────── */
+        .gate-card {
+            background: linear-gradient(145deg, #0f0e2a, #1f2937);
+            border-color: rgba(99,102,241,0.4);
+        }
+
+        .gate-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #a5b4fc;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .gate-hint {
+            font-size: 0.82rem;
+            color: #4b5563;
+            margin-bottom: 20px;
+            line-height: 1.55;
+            font-style: italic;
+        }
+
+        .password-input {
+            width: 100%;
+            background: #111827;
+            border: 2px solid #374151;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 1.1rem;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .password-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+        }
+
+        .password-input.error {
+            border-color: #ef4444;
+            animation: shake 0.35s ease;
+        }
+
+        .password-input.success {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%       { transform: translateX(-8px); }
+            40%       { transform: translateX(8px); }
+            60%       { transform: translateX(-6px); }
+            80%       { transform: translateX(6px); }
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4338ca, #6366f1);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .submit-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+        .error-msg {
+            color: #f87171;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            min-height: 1.2em;
+        }
+
+        .success-msg {
+            color: #a5b4fc;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            min-height: 1.2em;
+        }
+
+        .error-msg.visible   { opacity: 1; }
+        .success-msg.visible { opacity: 1; }
+
+        /* ── FOOTER ──────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #374151;
+            margin-top: 28px;
+            line-height: 1.6;
+        }
+    
+        /* ── MULTIPLE CHOICE HINT (after 6 wrong attempts) ── */
+        .mcq-section {
+            margin-top: 14px;
+            display: none;
+        }
+        .mcq-label {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+        .mcq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .choice-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 10px;
+            padding: 12px 8px;
+            color: #e5e7eb;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .choice-btn:hover {
+            background: rgba(255,255,255,0.13);
+            border-color: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <span class="hunt-label">MQ Campus Hunt</span>
+    <span class="header-emoji">✨</span>
+    <h1>Where Have All My Good Friends Gone?</h1>
+    <p class="header-sub">Have you looked in the Jim Piper Centre lately?</p>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-label">Stop 8 of 9</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- RIDDLE / POEM -->
+    <div class="card poem-card">
+        <div class="card-label" style="color:#818cf8;">📜 The Riddle</div>
+        <div class="poem">
+            <p>Stand in the Central Courtyard and face the 1CC tall —<br>
+            You may not know it yet, but I'm not far away at all.<br>
+            The building on your right holds something rare to find:<br>
+            You'll need your very keenest eyes and a sharp and searching mind.</p>
+
+            <p>I'm one of the world's largest of my radiant, glowing kind —<br>
+            A miracle of laser light, a wonder of the mind.<br>
+            An ode raised to the absent ones, to friends who aren't here now,<br>
+            The night they toasted those long gone — I captured every vow.</p>
+
+            <p>It was quite a night out back then — the glasses rose up high!<br>
+            Now seek me where the light refracts and rainbows catch your eye.<br>
+            Step inside, let vision adjust, and find what's waiting there —<br>
+            Raise a toast to absent friends shimmering in the air. 🥂</p>
+        </div>
+    </div>
+
+    <div class="divider"><span>You've found it — prove it!</span></div>
+
+    <!-- PASSWORD GATE -->
+    <div class="card gate-card">
+        <div class="card-label" style="color:#818cf8;">🔒 Location Check</div>
+        <div class="gate-question">What type of artwork is "To Absent Friends"?</div>
+        <p class="gate-hint">💡 Hint: Read the information display next to the artwork — it names exactly what type of artwork this is.</p>
+
+        <div class="error-msg" id="errorMsg">Not quite — look at the information label next to the artwork.</div>
+        <div class="success-msg" id="successMsg">✅ Correct! Loading your challenges…</div>
+
+        <input
+            type="text"
+            class="password-input"
+            id="passwordInput"
+            placeholder="Type the type of artwork here…"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+        >
+        <button class="submit-btn" onclick="checkPassword()">Unlock Challenges →</button>
+        <div class="mcq-section" id="mcqSection">
+            <p class="mcq-label">&#128161; Having trouble? Select your answer:</p>
+            <div class="mcq-grid" id="mcqGrid"></div>
+        </div>
+    </div>
+
+</div>
+
+<p class="footer">MQ Campus Treasure Hunt &nbsp;·&nbsp; Stuck? Step into the building on your right from the Central Courtyard when facing 1CC.</p>
+
+<script>
+    const ANSWER    = 'hologram';
+    const WRONG_OPTIONS = ['photograph', 'painting', 'sculpture'];
+    let wrongAttempts  = 0;
+    const NEXT_PAGE = '2026-07-05-clue-08b-hologram-tasks.html';
+
+    function checkPassword() {
+        const input      = document.getElementById('passwordInput');
+        const errorMsg   = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const val        = input.value.trim().toLowerCase();
+
+        if (val === ANSWER) {
+            input.classList.remove('error');
+            input.classList.add('success');
+            errorMsg.classList.remove('visible');
+            successMsg.classList.add('visible');
+            document.querySelector('.submit-btn').disabled = true;
+            setTimeout(() => {
+                const alliance = new URLSearchParams(window.location.search).get('alliance') || '1';
+                window.location.href = NEXT_PAGE + '?alliance=' + alliance;
+            }, 1200);
+        } else {
+            wrongAttempts++;
+            if (wrongAttempts === 6) showMultipleChoice();
+            input.classList.add('error');
+            input.classList.remove('success');
+            errorMsg.classList.add('visible');
+            successMsg.classList.remove('visible');
+            setTimeout(() => input.classList.remove('error'), 400);
+        }
+    }
+
+
+    function showMultipleChoice() {
+        const section = document.getElementById('mcqSection');
+        const grid    = document.getElementById('mcqGrid');
+        const options = [ANSWER, ...WRONG_OPTIONS];
+        for (let i = options.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [options[i], options[j]] = [options[j], options[i]];
+        }
+        grid.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = opt;
+            btn.onclick = () => {
+                document.getElementById('passwordInput').value = opt;
+                checkPassword();
+            };
+            grid.appendChild(btn);
+        });
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPassword();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop 6 — Michael Kirby Building | MQ Campus Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050a1a;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            background: linear-gradient(150deg, #050a1a, #0a1f40, #0f4c75);
+            padding: 28px 20px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '§  ⚖  §';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            letter-spacing: 12px;
+            color: rgba(217,183,75,0.25);
+            white-space: nowrap;
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: rgba(217,183,75,0.12);
+            border: 1px solid rgba(217,183,75,0.35);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #fde68a;
+            margin-bottom: 14px;
+        }
+
+        .header-emoji {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 16px rgba(217,183,75,0.5));
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            color: #fef3c7;
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 18px;
+            color: #fde68a;
+        }
+
+        .progress-wrap { max-width: 320px; margin: 0 auto; }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 5px;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #d97706, #fbbf24);
+            height: 100%;
+            width: 60%;
+            border-radius: 99px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            opacity: 0.65;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-align: right;
+            color: #fde68a;
+        }
+
+        /* ── CONTAINER ───────────────────────────── */
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 24px 16px 0;
+        }
+
+        /* ── CARDS ───────────────────────────────── */
+        .card {
+            background: #0d1b2e;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .card-label::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ── WELCOME BANNER ──────────────────────── */
+        .welcome-banner {
+            background: rgba(15,76,117,0.2);
+            border: 1px solid rgba(15,76,117,0.45);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .welcome-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #fde68a;
+            margin-bottom: 6px;
+        }
+
+        .welcome-banner p {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            line-height: 1.65;
+        }
+
+        /* ── CHALLENGE CARD ──────────────────────── */
+        .challenge-card {
+            background: linear-gradient(145deg, #0c1a30, #0d1b2e);
+            border-color: rgba(59,130,246,0.25);
+        }
+
+        .challenge-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #93c5fd;
+            margin-bottom: 16px;
+        }
+
+        /* ── STAIRCASE IMAGE ─────────────────────── */
+        .staircase-image-wrap {
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            border: 1px solid rgba(217,183,75,0.25);
+            position: relative;
+        }
+
+        .staircase-image-wrap img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            max-height: 360px;
+        }
+
+        .staircase-caption {
+            background: rgba(5,10,26,0.85);
+            padding: 10px 14px;
+            font-size: 0.8rem;
+            color: #fde68a;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── STEPS ───────────────────────────────── */
+        .steps { list-style: none; counter-reset: steps; }
+
+        .steps li {
+            counter-increment: steps;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            font-size: 0.93rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .steps li:last-child { margin-bottom: 0; }
+
+        .steps li::before {
+            content: counter(steps);
+            background: #0f4c75;
+            color: #fde68a;
+            min-width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: linear-gradient(135deg, #0a2f4d, #0f4c75);
+            color: #fde68a;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(217,183,75,0.3);
+            cursor: pointer;
+            text-decoration: none;
+            margin: 20px 0 10px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .upload-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+        .reveal-btn {
+            width: 100%;
+            background: transparent;
+            color: #fde68a;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 13px 20px;
+            border-radius: 12px;
+            border: 2px solid #d97706;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reveal-btn:hover { background: rgba(217,183,75,0.1); }
+        .reveal-btn:disabled { opacity: 0.5; cursor: default; }
+
+        /* ── STEM CARD ───────────────────────────── */
+        .stem-card {
+            background: linear-gradient(145deg, #0a1a0a, #0d1b2e);
+            border-color: rgba(52,211,153,0.2);
+        }
+
+        .stem-fact {
+            background: rgba(52,211,153,0.07);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: #d1fae5;
+        }
+
+        .stem-fact strong { color: #34d399; }
+
+        .stem-question {
+            margin-top: 14px;
+            font-size: 0.88rem;
+            font-style: italic;
+            color: #6ee7b7;
+            line-height: 1.6;
+        }
+
+        /* ── NEXT CLUE ───────────────────────────── */
+        #nextClueSection { display: none; }
+
+        .next-clue-card {
+            background: #030712;
+            border-color: rgba(217,183,75,0.2);
+        }
+
+        /* ── NEXT STOP BUTTON ────────────────────── */
+        .next-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #15803d, #16a34a);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 20px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* ── FOOTER ──────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #1f2937;
+            margin-top: 28px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <span class="hunt-label">MQ Campus Hunt</span>
+    <span class="header-emoji">⚖️</span>
+    <h1>Michael Kirby Building</h1>
+    <p class="header-sub">Complete all challenges before moving on!</p>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-label">Stop 6 of 10</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+        <h2>Welcome to the Law School! ⚖️</h2>
+        <p>You're standing in one of Australia's most remarkable university buildings — the <strong style="color:#fde68a;">Michael Kirby Building</strong>, home of the Macquarie Law School. Named after Justice Michael Kirby, one of Australia's most celebrated High Court judges and a tireless champion of human rights, this building was designed by architects Hassell and completed in 2024. The entire four-storey structure is built from <strong style="color:#fde68a;">cross-laminated timber (CLT)</strong> — a sustainable, carbon-storing alternative to concrete and steel.</p>
+    </div>
+
+    <!-- PHOTO CHALLENGE -->
+    <div class="card challenge-card">
+        <div class="card-label" style="color:#3b82f6;">📸 Challenge 1 — Photo</div>
+        <div class="challenge-title">Take Your Seats on the Stairs!</div>
+
+        <!-- Staircase reference image -->
+        <div class="staircase-image-wrap">
+            <img
+                src="law-building-stairs.jpg"
+                alt="The illuminated grand staircase inside the Michael Kirby Building atrium"
+                onerror="this.parentElement.style.background='rgba(15,76,117,0.2)'; this.parentElement.style.padding='24px'; this.style.display='none'; this.parentElement.querySelector('.staircase-caption').textContent='📍 Head to the grand central staircase in the atrium — the illuminated timber steps leading up from the ground floor.';"
+            />
+            <div class="staircase-caption">📍 Find these illuminated timber stairs in the main atrium</div>
+        </div>
+
+        <ol class="steps">
+            <li><span>In the main atrium, have the group sit on the grand central staircase.</span></li>
+            <li><span>Take the best group shot you can.</span></li>
+            <li><span>Upload your photo using the button below.</span></li>
+        </ol>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeujMqRUgt0vlhniL6axwbQCaaQe8_A-ug0zZ2_abqI5b7DtA/viewform?usp=publish-editor" class="upload-btn" target="_blank">
+            📤 &nbsp;Upload Photo to Team Drive
+        </a>
+        <button class="reveal-btn" id="revealBtn" onclick="revealNextClue()">
+            ✅ &nbsp;Photo uploaded — unlock the next clue!
+        </button>
+    </div>
+
+    <!-- STEM CHALLENGE -->
+    <div class="card stem-card">
+        <div class="card-label" style="color:#34d399;">🌿 Optional Challenge 2 — STEM &amp; Sustainability</div>
+        <div class="stem-fact">
+            The Michael Kirby Building is built almost entirely from <strong>Cross-Laminated Timber (CLT)</strong> — engineered panels made by gluing layers of solid timber at 90° angles to each other. This makes the panels incredibly strong in every direction, almost as strong as steel but a fraction of the weight. Here's the remarkable part: trees absorb CO₂ as they grow, and that carbon stays <strong>locked inside the building</strong> for its entire lifetime. The Michael Kirby Building's timber structure stores an estimated <strong>1,000+ tonnes of carbon</strong> — roughly equivalent to taking 220 cars off the road for a year. Mass timber buildings also go up <strong>30% faster</strong> than concrete equivalents and are far quieter to construct — a big advantage on a busy university campus.
+        </div>
+        <p class="stem-question">
+            💭 As a group, discuss: Justice Michael Kirby was famous for championing human rights — including the right to a healthy environment. Why might a law school choose to build in sustainable timber rather than concrete? Is there a connection between justice and the climate?
+        </p>
+    </div>
+
+    <!-- CONTINUE (hidden until photo uploaded) -->
+    <div id="nextClueSection">
+        <div class="card next-clue-card">
+            <div class="card-label" style="color:#fde68a;">✅ Stop Complete!</div>
+            <p style="font-size:0.9rem; color:#94a3b8; line-height:1.6; margin-bottom:20px;">
+                Great work — case closed! Tap below to receive your alliance's next clue.
+            </p>
+            <button class="next-btn" onclick="continueHunt()">
+                Get Next Clue →
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<p class="footer">MQ Campus Treasure Hunt &nbsp;·&nbsp; Complete all challenges before moving on!</p>
+
+<script>
+    function revealNextClue() {
+        const section = document.getElementById('nextClueSection');
+        const btn = document.getElementById('revealBtn');
+
+        section.style.display = 'block';
+        btn.textContent = '✅  Stop complete — get your next clue!';
+        btn.style.borderColor = '#34d399';
+        btn.style.color = '#34d399';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+
+    function continueHunt() {
+        const p = new URLSearchParams(window.location.search);
+        const alliance = p.get('alliance') || '1';
+        window.location.href = 'route.html?alliance=' + alliance + '&from=stop6';
+    }
+</script>
+
+</body>
+</html>

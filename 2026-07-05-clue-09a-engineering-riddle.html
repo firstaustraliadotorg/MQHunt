@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop 9 — Engineering the Future | MQ Campus Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            background: linear-gradient(160deg, #0c0500, #431407, #ea580c);
+            padding: 28px 20px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '— ⚙ —';
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            letter-spacing: 10px;
+            color: rgba(254,215,170,0.3);
+            white-space: nowrap;
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .header-emoji {
+            font-size: 3.2rem;
+            display: block;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 10px rgba(249,115,22,0.6));
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            opacity: 0.75;
+            margin-bottom: 18px;
+            color: #fed7aa;
+        }
+
+        .progress-wrap { max-width: 320px; margin: 0 auto; }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 5px;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: rgba(255,255,255,0.9);
+            height: 100%;
+            width: 89%;
+            border-radius: 99px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            opacity: 0.65;
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-align: right;
+            color: #fed7aa;
+        }
+
+        /* ── CONTAINER ───────────────────────────── */
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 24px 16px 0;
+        }
+
+        /* ── FINAL STOP BANNER ───────────────────── */
+        .final-banner {
+            background: rgba(249,115,22,0.1);
+            border: 1px solid rgba(249,115,22,0.35);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: #fed7aa;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── CARDS ───────────────────────────────── */
+        .card {
+            background: #1f2937;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .card-label::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ── POEM CARD ───────────────────────────── */
+        .poem-card {
+            background: linear-gradient(145deg, #2d1000, #1f2937);
+            border-color: rgba(249,115,22,0.3);
+        }
+
+        .poem {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.95;
+            color: #fed7aa;
+            border-left: 3px solid #f97316;
+            padding-left: 18px;
+        }
+
+        .poem p { margin-bottom: 16px; }
+        .poem p:last-child { margin-bottom: 0; }
+
+        /* ── DIVIDER ─────────────────────────────── */
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 6px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .divider span {
+            background: #111827;
+            padding: 0 14px;
+            font-size: 0.78rem;
+            color: #374151;
+            position: relative;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* ── GATE CARD ───────────────────────────── */
+        .gate-card {
+            background: linear-gradient(145deg, #150800, #1f2937);
+            border-color: rgba(249,115,22,0.4);
+        }
+
+        .gate-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #fb923c;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .gate-hint {
+            font-size: 0.82rem;
+            color: #4b5563;
+            margin-bottom: 20px;
+            line-height: 1.55;
+            font-style: italic;
+        }
+
+        .password-input {
+            width: 100%;
+            background: #111827;
+            border: 2px solid #374151;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 1.1rem;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .password-input:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249,115,22,0.2);
+        }
+
+        .password-input.error {
+            border-color: #ef4444;
+            animation: shake 0.35s ease;
+        }
+
+        .password-input.success {
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249,115,22,0.3);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%       { transform: translateX(-8px); }
+            40%       { transform: translateX(8px); }
+            60%       { transform: translateX(-6px); }
+            80%       { transform: translateX(6px); }
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #c2410c, #f97316);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .submit-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+        .error-msg {
+            color: #f87171;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            min-height: 1.2em;
+        }
+
+        .success-msg {
+            color: #fb923c;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            min-height: 1.2em;
+        }
+
+        .error-msg.visible   { opacity: 1; }
+        .success-msg.visible { opacity: 1; }
+
+        /* ── FOOTER ──────────────────────────────── */
+        .footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #374151;
+            margin-top: 28px;
+            line-height: 1.6;
+        }
+    
+        /* ── MULTIPLE CHOICE HINT (after 6 wrong attempts) ── */
+        .mcq-section {
+            margin-top: 14px;
+            display: none;
+        }
+        .mcq-label {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+        .mcq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .choice-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 10px;
+            padding: 12px 8px;
+            color: #e5e7eb;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .choice-btn:hover {
+            background: rgba(255,255,255,0.13);
+            border-color: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <span class="hunt-label">MQ Campus Hunt</span>
+    <span class="header-emoji">⚙️</span>
+    <h1>Engineering the Future</h1>
+    <p class="header-sub">You made it — now prove you're here!</p>
+    <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-label">Stop 9 of 9</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="final-banner">⚙️ &nbsp;One of the campus's most impressive stops — challenge your team to prove it!</div>
+
+    <!-- RIDDLE / POEM -->
+    <div class="card poem-card">
+        <div class="card-label" style="color:#fb923c;">📜 The Riddle</div>
+        <div class="poem">
+            <p>The newest building on the campus — amazing to behold,<br>
+            Precisely engineered and crafted, beautiful and bold.<br>
+            It stands impressive in all aspects, celebrated, revered —<br>
+            A campus landmark rising where tomorrow's engineered.</p>
+
+            <p>No lecture halls within these walls — just Mega Labs instead,<br>
+            Where things get hands-on really fast and real-world skills are bred.<br>
+            In makerspaces built to last, the creative phase begins —<br>
+            Where students forge their futures and the engineering wins!</p>
+
+            <p>From drones to satellites to robots, makers fill the space,<br>
+            These engineers for ________ — set to help the human race.<br>
+            Find the word that fills the blank — the motto's on the wall —<br>
+            The grandest, boldest, newest stop — the finest of them all! 🏗️</p>
+        </div>
+    </div>
+
+    <div class="divider"><span>You've found it — prove it!</span></div>
+
+    <!-- PASSWORD GATE -->
+    <div class="card gate-card">
+        <div class="card-label" style="color:#fb923c;">🔒 Location Check</div>
+        <div class="gate-question">Complete the School of Engineering's mission — "Engineers for ________"</div>
+        <p class="gate-hint">💡 Hint: Look for the School's vision statement on the building's information boards, signage, or entry displays.</p>
+
+        <div class="error-msg" id="errorMsg">Not quite — find the School of Engineering's mission statement on the building.</div>
+        <div class="success-msg" id="successMsg">✅ Correct! Loading your challenges…</div>
+
+        <input
+            type="text"
+            class="password-input"
+            id="passwordInput"
+            placeholder="Type the missing word here…"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+        >
+        <button class="submit-btn" onclick="checkPassword()">Unlock Challenges →</button>
+        <div class="mcq-section" id="mcqSection">
+            <p class="mcq-label">&#128161; Having trouble? Select your answer:</p>
+            <div class="mcq-grid" id="mcqGrid"></div>
+        </div>
+    </div>
+
+</div>
+
+<p class="footer">MQ Campus Treasure Hunt &nbsp;·&nbsp; Stuck? The building is on Wally's Walk near the Balaclava Road intersection.</p>
+
+<script>
+    const ANSWER    = 'humanity';
+    const WRONG_OPTIONS = ['society', 'progress', 'community'];
+    let wrongAttempts  = 0;
+    const NEXT_PAGE = '2026-07-05-clue-09b-engineering-tasks.html';
+
+    function checkPassword() {
+        const input      = document.getElementById('passwordInput');
+        const errorMsg   = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const val        = input.value.trim().toLowerCase();
+
+        if (val === ANSWER) {
+            input.classList.remove('error');
+            input.classList.add('success');
+            errorMsg.classList.remove('visible');
+            successMsg.classList.add('visible');
+            document.querySelector('.submit-btn').disabled = true;
+            setTimeout(() => {
+                const alliance = new URLSearchParams(window.location.search).get('alliance') || '1';
+                window.location.href = NEXT_PAGE + '?alliance=' + alliance;
+            }, 1200);
+        } else {
+            wrongAttempts++;
+            if (wrongAttempts === 6) showMultipleChoice();
+            input.classList.add('error');
+            input.classList.remove('success');
+            errorMsg.classList.add('visible');
+            successMsg.classList.remove('visible');
+            setTimeout(() => input.classList.remove('error'), 400);
+        }
+    }
+
+
+    function showMultipleChoice() {
+        const section = document.getElementById('mcqSection');
+        const grid    = document.getElementById('mcqGrid');
+        const options = [ANSWER, ...WRONG_OPTIONS];
+        for (let i = options.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [options[i], options[j]] = [options[j], options[i]];
+        }
+        grid.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = opt;
+            btn.onclick = () => {
+                document.getElementById('passwordInput').value = opt;
+                checkPassword();
+            };
+            grid.appendChild(btn);
+        });
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPassword();
+    });
+</script>
+
+</body>
+</html>
